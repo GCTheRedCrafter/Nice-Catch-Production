@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-from storage import Storage
-from logic import Matcher
+from modules.storage import Storage
+from modules.logic import Matcher
 
 class NiceCatchApp(tk.Tk):
     def __init__(self, current_user_id=1):
@@ -41,7 +41,8 @@ class NiceCatchApp(tk.Tk):
         self.more_btn.pack(pady=5)
 
     def load_next_profile(self):
-        self.current_profile = self.matcher.get_next_profile()
+        self.last_profile_id = self.current_profile["id"] if self.current_profile else None
+        self.current_profile = self.matcher.get_next_profile(self.last_profile_id)
         if not self.current_profile:
             self.name_label.config(text="Keine weiteren Profile 😢")
             self.info_label.config(text="")
@@ -64,7 +65,8 @@ class NiceCatchApp(tk.Tk):
         if not self.current_profile:
             return
         chat_id = self.matcher.like_user(self.current_profile["id"])
-        messagebox.showinfo("Match!", f"Du hast ein Match! Chat-ID: {chat_id}")
+        if chat_id is not None:
+            messagebox.showinfo("Match!", f"Du hast ein Match! Chat-ID: {chat_id}")
         self.load_next_profile()
 
     def show_details(self):
@@ -72,7 +74,3 @@ class NiceCatchApp(tk.Tk):
         if not self.current_profile:
             return
         messagebox.showinfo("Details", self.current_profile["bio"])
-
-if __name__ == "__main__":
-    app = NiceCatchApp()
-    app.mainloop()

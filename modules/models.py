@@ -16,11 +16,13 @@ class Dog:
 class UserProfile:
     id: int
     name: str
+    password: str
     age: int
     city: str
     bio: str
     interests: List[str]
     dog: Dog
+    seen_profiles: List[str] = field(default_factory=list)
 
 @dataclass
 class Match:
@@ -45,28 +47,3 @@ class Chat:
     user1_id: int
     user2_id: int
     messages: List[Message] = field(default_factory=list)
-
-if __name__ == "__main__":
-    from pprint import pprint
-    # kleiner Selbsttest
-    from datetime import datetime
-    mia_dog = Dog(
-        id=1,
-        name="Bailey",
-        age_years=4,
-        sex="Rüde",
-        friendly=True,
-        dislikes_water=True,
-        description="Mag Spaziergänge, ist freundlich, aber kein Fan von Wasser."
-    )
-
-    mia = UserProfile(
-        id=1,
-        name="Mia",
-        age=55,
-        city="Nähe Bielefeld",
-        bio="Offen, herzlich und humorvoll. Freue mich auf nette Gassi‑Kontakte.",
-        interests=["Spaziergänge", "Natur", "gute Gespräche"],
-        dog=mia_dog
-)
-    pprint(mia)
