@@ -8,8 +8,6 @@ class Dog:
     name: str
     age_years: int
     sex: str          # "Rüde" oder "Hündin"
-    friendly: bool
-    dislikes_water: bool
     description: str = ""
 
 @dataclass

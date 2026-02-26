@@ -74,3 +74,7 @@ class NiceCatchApp(tk.Tk):
         if not self.current_profile:
             return
         messagebox.showinfo("Details", self.current_profile["bio"])
+
+if __name__ == "__main__":
+    app = NiceCatchApp()
+    app.mainloop()

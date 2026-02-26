@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from dataclasses import asdict
 
-from modules.models import UserProfile, Dog, Match, Chat, Message
+#from modules.models import UserProfile, Dog, Match, Chat, Message
 
 class Storage:
     def __init__(self, path="nicecatch_data.json"):
@@ -26,4 +26,11 @@ class Storage:
         user_dict = asdict(user_obj)
         self.data["users"].append(user_dict)
         self.save()
-s = Storage()
+    
+    def reset(self):
+        self.data = {"users": self.data["users"], "matches": [], "chats": [], "messages": []}
+        self.save()
+
+if __name__ == "__main__":
+    storage = Storage()
+    storage.reset()
