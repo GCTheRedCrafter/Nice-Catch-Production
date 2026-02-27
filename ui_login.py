@@ -1,24 +1,35 @@
 import customtkinter as tk
 from tkinter import messagebox
+from PIL import Image
 
 from modules.storage import Storage
 from modules.logic import check_password
 from modules.ui_main import NiceCatchApp
 from modules.models import Dog, UserProfile
+from modules.ui_utils import MessageWindow
 
 class LoginWindow(tk.CTk):
     def __init__(self):
         super().__init__()
         self.title("NiceCatch Login")
-        self.geometry("300x250")
+        self.geometry("300x380")
         self.storage = Storage()
         self.build_widgets()
 
     def build_widgets(self):
+        self.logo_image = tk.CTkImage(
+            light_image=Image.open("img/logo.jpeg"),     # Pfad zu Bild
+            dark_image=Image.open("img/logo.jpeg"),      # gleiches Bild oder anderes
+            size=(100, 100)                         # Anzeigegröße (skaliert automatisch)
+        )
+
+
+        self.logo_label = tk.CTkLabel(self, image=self.logo_image, text="")
+        self.logo_label.pack(pady=10)
+
         tk.CTkLabel(self, text="Benutzername:").pack(pady=5)
         self.username_entry = tk.CTkEntry(self)
         self.username_entry.pack(pady=5)
-
 
         tk.CTkLabel(self, text="Passwort:").pack(pady=5)
         self.password_entry = tk.CTkEntry(self, show="*")
@@ -33,13 +44,12 @@ class LoginWindow(tk.CTk):
         password = self.password_entry.get()
         user_id = check_password(self.storage, username, password)
         if user_id:
-            messagebox.showinfo("Erfolg", f"Willkommen zurück, {username}!")
+            MessageWindow("Erfolg", f"Willkommen zurück, {username}!")
             self.destroy()  # Login-Fenster schließen
             # Hier könntest du das Hauptfenster starten und user_id übergeben
-            main_app = NiceCatchApp(current_user_id=user_id)
-            main_app.mainloop()
+            NiceCatchApp(current_user_id=user_id).mainloop()
         else:
-            messagebox.showerror("Fehler", "Ungültiger Benutzername oder Passwort.")
+            MessageWindow("Fehler", "Ungültiger Benutzername oder Passwort.")
     
     def new_user(self):
         reg_window = RegisterWindow(self.storage)
@@ -117,9 +127,10 @@ class RegisterWindow(tk.CTkToplevel):
             dog=dog_obj
         )
         self.storage.add_user(user_obj)
-        messagebox.showinfo("Erfolg", "Registrierung erfolgreich!")
+        MessageWindow("Erfolg", "Registrierung erfolgreich! Du kannst dich jetzt einloggen.")
         self.destroy()
 
 if __name__ == "__main__":
     app = LoginWindow()
+    #app = NiceCatchApp(current_user_id=3)  # Direkt zum Hauptfenster mit User-ID 1
     app.mainloop()

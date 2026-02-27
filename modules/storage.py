@@ -33,4 +33,8 @@ class Storage:
 
 if __name__ == "__main__":
     storage = Storage()
+    for user in storage.data["users"]:
+        user["seen_profiles"] = []
+    storage.save()
     storage.reset()
+    print("Storage reseted")
