@@ -1,5 +1,7 @@
 import customtkinter as tk
+from tkinter import filedialog
 from PIL import Image
+import os
 
 from modules.ui_utils import MessageWindow
 from modules.storage import Storage
@@ -22,8 +24,13 @@ class ProfileWindow(tk.CTkToplevel):
         self.grid_columnconfigure(2, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        self.chat_btn = tk.CTkButton(self, text="Save Changes", command=self.save)
+        self.chat_btn = tk.CTkButton(self, text="Speichern", command=self.save)
         self.chat_btn.grid(row=0, column=2, sticky="ne", padx=(5, 10), pady=10)
+
+        self.change_img_btn = tk.CTkButton(self, text="Profilbild ändern", 
+            command=lambda: self.select_image())
+
+        self.change_img_btn.grid(row=0, column=1, sticky="ne", padx=(150, 5), pady=10)
 
         self.title_label = tk.CTkLabel(self, text="NiceCatch", font=tk.CTkFont(size=24, weight="bold"))
         self.title_label.grid(row=0, column=0, columnspan=2, sticky="nw", padx=10, pady=10)
@@ -94,6 +101,62 @@ class ProfileWindow(tk.CTkToplevel):
             self.bio_entry = tk.CTkEntry(self.card_frame, font=tk.CTkFont(size=12), justify="left", text_color="black", fg_color="gray")
             self.bio_entry.insert(0, self.profile_data["bio"])
             self.bio_entry.pack(pady=(0, 30), padx=25, fill="x", expand=True)
+    
+    
+    def select_image(self):
+        """Öffnet Dateiauswahl NUR für PNG"""
+        file_path = filedialog.askopenfilename(
+            title="Profilbild auswählen (PNG)",
+            filetypes=[("PNG Bilder", "*.png")]  # NUR PNG
+        )
+        
+        if file_path:
+            try:
+                # Bild laden und skalieren
+                img = Image.open(file_path)
+                img.thumbnail((200, 250), Image.Resampling.LANCZOS)
+                
+                preview = tk.CTkToplevel()
+                preview.title("Profilbild Vorschau")
+                preview.attributes("-topmost", True)
+                preview.geometry("250x350")
+
+                # Als CTkImage für Vorschau
+                self.profile_img = tk.CTkImage(light_image=img, dark_image=img, size=(200, 250))
+                profile_img_preview_label = tk.CTkLabel(preview, image=self.profile_img, text="")
+                profile_img_preview_label.pack(pady=10)
+
+                # Bestätigung
+                confirm_img = tk.CTkButton(preview ,text=f"✅ {os.path.basename(file_path)}", text_color="#4CAF50", command=lambda: [self.save_profile_image(file_path), preview.destroy()])
+                confirm_img.pack(pady=10)
+                
+            except Exception as e:
+                MessageWindow("Fehler", f"PNG konnte nicht geladen werden:\n{str(e)}")
+
+    def save_profile_image(self, file_path):
+        """Kopiert ausgewähltes PNG ins img/ Verzeichnis"""
+        if file_path:
+            try:
+                # img/ Ordner erstellen
+                os.makedirs("img", exist_ok=True)
+                
+                # Zielpfad
+                new_path = f"img/profile_{self.profile_data['id']}.png"
+                
+                # Original skalieren und als PNG speichern
+                img = Image.open(file_path)
+                img.thumbnail((400, 500), Image.Resampling.LANCZOS)
+                img.save(new_path, "PNG", quality=95)
+                
+                # Im Profil speichern
+                self.profile_data["profile_image"] = new_path
+                return True
+                
+            except Exception as e:
+                MessageWindow("Fehler", f"PNG konnte nicht gespeichert werden:\n{str(e)}")
+                return False
+        return False
+    
     
     def save(self):
         # Dog
