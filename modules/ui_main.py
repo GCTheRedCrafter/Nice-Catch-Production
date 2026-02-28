@@ -41,7 +41,7 @@ class NiceCatchApp(tk.CTk):
         self.profile_btn.grid(row=0, column=1, sticky="ne", padx=(150, 5), pady=10)
 
         # SCROLLABLE FRAME (leer lassen)
-        self.card_frame = tk.CTkScrollableFrame(self, fg_color="gray90", corner_radius=15)
+        self.card_frame = tk.CTkScrollableFrame(self, fg_color="#dddddd", corner_radius=15)
         self.card_frame.grid(row=1, column=0, columnspan=3, sticky="nsew", padx=15, pady=15)
         self.card_frame.grid_columnconfigure(0, weight=1)
 
@@ -90,7 +90,7 @@ class NiceCatchApp(tk.CTk):
                 profile_image = None
 
         if profile_image:
-            profile_img = tk.CTkImage(light_image=profile_image, dark_image=profile_image, size=(140, 180))
+            profile_img = tk.CTkImage(light_image=profile_image, dark_image=profile_image, size=(400, 510))
             picture_label = tk.CTkLabel(self.card_frame, image=profile_img, text="")
             picture_label.pack(pady=20)
         else:
@@ -101,21 +101,26 @@ class NiceCatchApp(tk.CTk):
         dog = self.current_profile["dog"]
         name_label = tk.CTkLabel(self.card_frame, 
                             text=f'{dog["name"]} – {dog["age_years"]} Jahre, {dog["sex"]}', 
-                            font=tk.CTkFont(size=22, weight="bold"))
+                            font=tk.CTkFont(size=22, weight="bold"), text_color="black")
         name_label.pack(pady=(0, 15), padx=25)
+
+        dog_info_label = tk.CTkLabel(self.card_frame, 
+                            text=f'{dog["description"]}', 
+                            font=tk.CTkFont(size=14), justify="left", text_color="black")
+        dog_info_label.pack(pady=0, padx=25)
 
         # INFO
         info_text = f'👤 {self.current_profile["name"]}, {self.current_profile["age"]} Jahre\n' \
                 f'📍 {self.current_profile["city"]}\n' \
                 f'🎾 {", ".join(self.current_profile["interests"])}'
         info_label = tk.CTkLabel(self.card_frame, text=info_text,
-                            font=tk.CTkFont(size=14), justify="left")
+                            font=tk.CTkFont(size=14), justify="left", text_color="black")
         info_label.pack(pady=20, padx=25)
 
         # BIO
         if self.current_profile.get("bio"):
             bio_label = tk.CTkLabel(self.card_frame, text=self.current_profile["bio"],
-                                font=tk.CTkFont(size=12), justify="left")
+                                font=tk.CTkFont(size=12), justify="left", text_color="black")
             bio_label.pack(pady=(0, 30), padx=25)
 
     def skip_profile(self):

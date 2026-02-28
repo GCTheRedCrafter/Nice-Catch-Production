@@ -131,6 +131,6 @@ class RegisterWindow(tk.CTkToplevel):
         self.destroy()
 
 if __name__ == "__main__":
-    app = LoginWindow()
-    #app = NiceCatchApp(current_user_id=3)  # Direkt zum Hauptfenster mit User-ID 1
+    #app = LoginWindow()
+    app = NiceCatchApp(current_user_id=1)  # Direkt zum Hauptfenster mit User-ID 1
     app.mainloop()
