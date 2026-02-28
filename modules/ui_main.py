@@ -2,6 +2,7 @@ import customtkinter as tk
 from PIL import Image
 
 from modules.ui_utils import MessageWindow
+from modules.ui_profile import ProfileWindow
 from modules.storage import Storage
 from modules.logic import Matcher
 
@@ -34,10 +35,8 @@ class NiceCatchApp(tk.CTk):
         self.title_label.grid(row=0, column=0, columnspan=2, sticky="nw", padx=10, pady=10)
 
         self.profile_btn = tk.CTkButton(self, text="👤 Profil", 
-            command=lambda: MessageWindow("Profil", 
-                f"Du bist eingeloggt als: {self.storage.data['users'][self.matcher.current_user_id - 1]['name']}"
-            )
-        )
+            command=lambda: ProfileWindow(self.storage, self.matcher.current_user_id))
+
         self.profile_btn.grid(row=0, column=1, sticky="ne", padx=(150, 5), pady=10)
 
         # SCROLLABLE FRAME (leer lassen)
@@ -72,7 +71,7 @@ class NiceCatchApp(tk.CTk):
         if not self.current_profile:
             self.clear_card_content()
             placeholder = tk.CTkLabel(self.card_frame, text="Keine Profile mehr 😢", 
-                                    font=tk.CTkFont(size=18))
+                                    font=tk.CTkFont(size=18), text_color="black")
             placeholder.pack(expand=True, pady=50)
             return
 
