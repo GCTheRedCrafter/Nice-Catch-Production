@@ -61,7 +61,7 @@ class RegisterWindow(tk.CTkToplevel):
         super().__init__()
         self.title("Registrieren")
         self.attributes("-topmost", True)
-        self.geometry("300x820")
+        self.geometry("300x860")
         self.storage = storage
         self.build_widgets()
 
