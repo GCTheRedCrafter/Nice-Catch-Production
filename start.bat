@@ -1,1 +1,1 @@
-python modules/ui_main.py
+python ui_login.py

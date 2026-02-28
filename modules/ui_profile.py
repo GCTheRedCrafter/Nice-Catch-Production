@@ -43,7 +43,7 @@ class ProfileWindow(tk.CTkToplevel):
                 profile_image = None
 
         if profile_image:
-            profile_img = tk.CTkImage(light_image=profile_image, dark_image=profile_image, size=(400, 510))
+            profile_img = tk.CTkImage(light_image=profile_image, dark_image=profile_image, size=(350, 420))
             picture_label = tk.CTkLabel(self.card_frame, image=profile_img, text="")
             picture_label.pack(pady=20)
         else:

@@ -28,7 +28,7 @@ class Storage:
         self.save()
     
     def reset(self):
-        self.data = {"users": self.data["users"], "matches": [], "chats": [], "messages": []}
+        self.data = {"users": self.data["users"], "matches": [], "chats": []}
         self.save()
 
 if __name__ == "__main__":

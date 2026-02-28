@@ -3,6 +3,7 @@ from PIL import Image
 
 from modules.ui_utils import MessageWindow
 from modules.ui_profile import ProfileWindow
+from modules.ui_chats import ChatsOverview
 from modules.storage import Storage
 from modules.logic import Matcher
 
@@ -15,6 +16,7 @@ class NiceCatchApp(tk.CTk):
         self.matcher = Matcher(self.storage, current_user_id)
         self.current_profile = None
         self.last_profile_id = None
+        self.current_user_id = current_user_id
 
         self.build_widgets()
         self.load_next_profile()
@@ -28,7 +30,7 @@ class NiceCatchApp(tk.CTk):
         self.grid_rowconfigure(1, weight=1)
 
         # HEADER (Row 0)
-        self.chat_btn = tk.CTkButton(self, text="💬 Chats", command=self.open_chats)
+        self.chat_btn = tk.CTkButton(self, text="💬 Chats", command=lambda: ChatsOverview(self.storage, self.current_user_id))
         self.chat_btn.grid(row=0, column=2, sticky="ne", padx=(5, 10), pady=10)
 
         self.title_label = tk.CTkLabel(self, text="NiceCatch", font=tk.CTkFont(size=24, weight="bold"))
@@ -133,8 +135,6 @@ class NiceCatchApp(tk.CTk):
             MessageWindow("🎉 Match!", f"Du hast ein Match! Chat-ID: {chat_id}")
         self.load_next_profile()
         
-    def open_chats(self):
-        MessageWindow("Chats", "Chats werden hier implementiert...")
 
 if __name__ == "__main__":
     app = NiceCatchApp()
