@@ -5,9 +5,9 @@ import os
 
 from modules.storage import Storage
 from modules.logic import check_password
-from modules.ui_main import NiceCatchApp
+from modules.pc_ui_main import NiceCatchApp
 from modules.models import Dog, UserProfile
-from modules.ui_utils import MessageWindow
+from modules.pc_ui_utils import MessageWindow
 
 class LoginWindow(tk.CTk):
     def __init__(self):

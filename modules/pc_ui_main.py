@@ -1,9 +1,9 @@
 import customtkinter as tk
 from PIL import Image
 
-from modules.ui_utils import MessageWindow
-from modules.ui_profile import ProfileWindow
-from modules.ui_chats import ChatsOverview
+from modules.pc_ui_utils import MessageWindow
+from modules.pc_ui_profile import ProfileWindow
+from modules.pc_ui_chat import ChatsOverview
 from modules.storage import Storage
 from modules.logic import Matcher
 
@@ -132,7 +132,7 @@ class NiceCatchApp(tk.CTk):
             return
         chat_id = self.matcher.like_user(self.current_profile["id"])
         if chat_id:
-            MessageWindow("🎉 Match!", f"Du hast ein Match! Chat-ID: {chat_id}")
+            MessageWindow("🎉 Match!", f"Du hast ein Match mit {self.current_profile['name']}!")
         self.load_next_profile()
         
 
